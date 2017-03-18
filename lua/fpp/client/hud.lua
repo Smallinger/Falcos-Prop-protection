@@ -163,7 +163,8 @@ local function HUDPaint()
 
     local weapon = LocalPlayer():GetActiveWeapon()
     local class = IsValid(weapon) and weapon:GetClass() or ""
-
+    local propModel = "'"..string.sub(table.remove(string.Explode("/", LAEnt:GetModel() or "?")), 1,-5).."' ["..LAEnt:EntIndex().."]"
+    local propClass = LAEnt:GetClass()
     local touchType = weaponClassTouchTypes[class] or "EntityDamage"
     local reason = FPP.entGetTouchReason(LAEnt, touchType)
     if not reason then return end
@@ -175,8 +176,18 @@ local function HUDPaint()
     local w,h = surface.GetTextSize(reason)
     local col = FPP.canTouchEnt(LAEnt, touchType) and Color(0, 255, 0, 255) or Color(255, 0, 0, 255)
 
-    draw.RoundedBox(4, 0, ScrH() / 2 - h - 2, w + 10, 20, Color(0, 0, 0, 110))
-    draw.DrawText(reason, "Default", 5, ScrH() / 2 - h, col, 0)
+    if w < surface.GetTextSize(propClass) then
+	w = surface.GetTextSize(propClass) + 5
+    elseif w < surface.GetTextSize(propModel) then
+	w = surface.GetTextSize(propModel)
+    end
+
+    draw.RoundedBox(4, 0, ScrH() / 2 - h - 2, w + 5, 51, Color(0, 0, 0, 180))
+    draw.DrawText(reason, "DermaDefault", 5, ScrH() / 2 - h + 1, col, 0)
+    draw.DrawText(propModel, "DermaDefault", 5, ScrH() / 2 - h + 16, Color(255, 255, 255, 255), 0)
+    draw.DrawText(propClass, "DermaDefault", 5, ScrH() / 2 - h + 31, Color(255, 255, 255, 255), 0)
     surface.SetDrawColor(255, 255, 255, 255)
 end
 hook.Add("HUDPaint", "FPP_HUDPaint", HUDPaint)
+
+
