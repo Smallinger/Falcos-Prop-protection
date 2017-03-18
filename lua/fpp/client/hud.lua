@@ -178,7 +178,9 @@ local function HUDPaint()
 
     if w < surface.GetTextSize(propClass) then
 	w = surface.GetTextSize(propClass) + 5
-    elseif w < surface.GetTextSize(propModel) then
+    end
+    
+    if w < surface.GetTextSize(propModel) then
 	w = surface.GetTextSize(propModel)
     end
 
@@ -189,5 +191,3 @@ local function HUDPaint()
     surface.SetDrawColor(255, 255, 255, 255)
 end
 hook.Add("HUDPaint", "FPP_HUDPaint", HUDPaint)
-
-
